@@ -11,8 +11,11 @@ int main(void)
 
     float x,y;
 
-    LCD.Clear( FEHLCD::Black );
-    LCD.SetFontColor( FEHLCD::White );
+    LCD.Clear(WHITE);
+    LCD.Clear(BLACK);
+
+  //  LCD.Clear( FEHLCD::White );
+    //LCD.SetFontColor( FEHLCD::White );
 
 
 //    LCD.WriteLine( "Hello World!" );
@@ -25,7 +28,7 @@ int main(void)
         if( LCD.Touch(&x,&y) )
         {
 
-            LCD.Clear (FEHLCD::Black);
+            //LCD.Clear (FEHLCD::Black);
             LCD.WriteLine( "Yeehaw!" );
         }
     }
@@ -39,9 +42,9 @@ void intro()
     int n=0;
     float x,y;
 
-    LCD.WriteAt("Beat the Lab Report", 94, 111);
+    LCD.WriteAt("Beat the Lab Report", 60, 111);
     Sleep(3.0);
-    LCD.WriteAt("Touch to Continue",94,160);
+    LCD.WriteAt("Touch to Continue",65,160);
 
     do
     {
@@ -61,7 +64,7 @@ void startMenu()
         FEHIcon::Icon menu[4];
 
         // define the four menu labels
-        char menu_labels[4][20] = {"START","Statistics","CREDITS","QUIT"};
+        char menu_labels[4][20] = {"START","STATISTICS","CREDITS","QUIT"};
 
         // draw the menu in a 2 by 2 array with top and bottom
         // margins of 10 and left and right margins of 5
@@ -77,12 +80,12 @@ void startMenu()
             LCD.Touch(&x,&y);
             if (menu[0].Pressed(x,y,0))
             {
-                LCD.Clear(BLACK);
+                LCD.Clear(WHITE);
                 n=1;
             }
-            if (menu[1].Pressed(x,y,1))
+            if (menu[1].Pressed(x,y,0))
             {
-                LCD.Clear(RED);
+                LCD.Clear(WHITE);
                 n=1;
             }
         }
