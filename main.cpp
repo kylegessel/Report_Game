@@ -67,7 +67,7 @@ int main(void)
     float x,y;
     float userhealth, enemyhealth, totalhealth, rtime;
     int q, n=0;
-    int choice;
+    int c;
 
    LCD.Clear(WHITE);
 
@@ -84,7 +84,7 @@ int main(void)
         //if n is 1 we will jsut procede, else we do one of these actions
         if (n==2)
         {
-            statsScreen(highscore);
+            statsScreen();
         }
         else if (n==3)
         {
@@ -92,6 +92,7 @@ int main(void)
         }
         else if (n==4)
         {
+            LCD.Clear(BLACK);
             return 0;
         }
     }
@@ -112,8 +113,12 @@ int main(void)
     Enemy E1(100,20);
     
     mainScreen(userhealth, enemyhealth);
-    
-    while(!(LCD.Touch(&x,&y));)
+    LCD.WriteAt("The Introduction stands",5,175);
+    LCD.WriteAt("in your way.",5,195);
+
+
+    Sleep(.25);
+    while(!(LCD.Touch(&x,&y)));
     
     //Battle 1
     while (true)
@@ -123,15 +128,10 @@ int main(void)
 
     enemyhealth=U1.Action(c);
 
-
-
-
      if (enemyhealth==0)
         {
         break;
         }
-
-
 
     userhealth=E1.Reaction();
         if (userhealth==0)
@@ -174,18 +174,18 @@ void intro()
 {
     float x,y;
     LCD.Clear(WHITE);
-    LCD.SetFontColor(Black);
+    LCD.SetFontColor(BLACK);
     LCD.WriteAt("Beat the Lab Report", 60, 111);
     Sleep(1.0);
     LCD.WriteAt("Touch to Continue",65,160);
 
-        while(!(LCD.Touch(&x,&y));
+        while(!(LCD.Touch(&x,&y)));
 
     startMenu();
 
 }
 
-void startMenu()
+int startMenu()
 {
         LCD.Clear(SILVER);
         // declare an array of four icons called menu
@@ -199,7 +199,7 @@ void startMenu()
         // with the menu labels, Red borders, and white text
         FEHIcon::DrawIconArray(menu, 2, 2, 10, 10, 5, 5, menu_labels, RED, BLACK);
 
-        int n=0,;
+        int n=0;
         float x, y;
 
 
@@ -237,7 +237,7 @@ void startMenu()
 
 
 //displays credits screen and goes back to main menu
-void creditsScreen();
+void creditsScreen()
 {
     float x,y;
     LCD.Clear(BLACK);
@@ -250,12 +250,14 @@ void creditsScreen();
     LCD.WriteLine("Touch to go back to the Main Menu.");
         
     //wait for touch
-        while(!(LCD.Touch(&x,&y));
+        while(!(LCD.Touch(&x,&y)));
 
 }
 
 void mainScreen(float user, float enemy)
 {
+    LCD.Clear(WHITE);
+
     //make user
     LCD.SetFontColor(RED);
     LCD.FillCircle(50,180,40);
@@ -265,41 +267,49 @@ void mainScreen(float user, float enemy)
     LCD.SetFontColor(ANTIQUEWHITE);
     LCD.FillRectangle(250,20,50,80);
 
-
-    //print your motivation
-    LCD.SetFontColor(BLACK);
-    LCD.WriteLine();
-
     //make enemy health box
-   drawEHealth(enemy);
+              LCD.SetFontColor(SILVER);
+              LCD.FillRectangle(130,15,110,40);
+              LCD.SetFontColor(BLACK);
+              LCD.WriteAt("Introduction",135,20);
+              LCD.SetFontColor(GREEN);
+              LCD.FillRectangle(135,40,enemy,5);
 
     //make user health box
-    drawUHealth(user);
+              LCD.SetFontColor(SILVER);
+              LCD.FillRectangle(100,125,110,40);
+              LCD.SetFontColor(BLACK);
+              LCD.WriteAt("My Motivation",105,130);
+              LCD.SetFontColor(GREEN);
+              LCD.FillRectangle(105,150,user,5);
 
     //make text box
     resetText();
 
 }  
-void drawEHealth(float enemy);
+
+void drawEHealth(float enemy)
 {
     //make user health box
     LCD.SetFontColor(SILVER);
     LCD.FillRectangle(130,15,110,40);
-    LCD.SetFontColor(Black);
+    LCD.SetFontColor(BLACK);
     LCD.WriteAt("Introduction",135,20);
     LCD.SetFontColor(GREEN);
     LCD.FillRectangle(135,40,enemy,5);
+    LCD.SetFontColor(BLACK);
 }
 
-void drawUHealth(float user);
+void drawUHealth(float user)
 {
     //make enemy health box
     LCD.SetFontColor(SILVER);
     LCD.FillRectangle(100,125,110,40);
-    LCD.SetFontColor(Black);
-    LCD.WriteAt("My Motivation",105,130);
+    LCD.SetFontColor(BLACK);
+    LCD.WriteAt("Motivation",105,130);
     LCD.SetFontColor(GREEN);
-    LCD.FillRectangle(105,150,enemy,5);
+    LCD.FillRectangle(105,150,user,5);
+    LCD.SetFontColor(BLACK);
 }
 
 
@@ -308,6 +318,7 @@ void resetText()
     //make text box
     LCD.SetFontColor(SILVER);
     LCD.FillRectangle(0,170,320,70);
+    LCD.SetFontColor(BLACK);
 
 }
 
@@ -324,7 +335,7 @@ int attackScreen()
     // draw the menu in a 1 by 4 array with top and bottom
     // margins of 10 and left and right margins of 5
     // with the menu labels, Red borders, and Black text
-    FEHIcon::DrawIconArray(menu, 1, 4, 10, 10, 5, 5, menu_labels, RED, BLACK);
+    FEHIcon::DrawIconArray(menu, 4, 1, 10, 10, 5, 5, menu_labels, RED, BLACK);
 
     int n=0,c;
     float x, y;
@@ -356,11 +367,13 @@ int attackScreen()
 
 
     }
+    LCD.SetFontColor(BLACK);
     return c;
 }
 
 void findHighscore(float s)
 {
+    float x,y;
     float temp;
     if (s>highscore[0])
     {
@@ -391,22 +404,28 @@ void findHighscore(float s)
         highscore[4]=s;
     }
 
-    while(!(LCD.Touch(&x,&y));
+    while(!(LCD.Touch(&x,&y)));
 }
 
 void statsScreen()
 {
+    float x,y;
+    int i;
     LCD.Clear(WHITE);
     LCD.SetFontColor(GREEN);
 
     LCD.WriteLine("HIGHSCORES");
     LCD.WriteLine("");
-    for (i=0;i<5:i++)
+    for (i=0;i<5;i++)
     {
     LCD.Write(i+1);
     LCD.Write(". ");
     LCD.WriteLine(highscore[i]);
+
+
+
     }
+    while(!(LCD.Touch(&x,&y)));
 }
 
 void winScreen(float healthtot)
@@ -415,7 +434,7 @@ void winScreen(float healthtot)
     LCD.SetFontColor(YELLOW);
     LCD.WriteLine("YOU WIN!");
     LCD.WriteLine("");
-    LCD.Write("Your score was: ")
+    LCD.Write("Your score was: ");
     LCD.WriteLine(healthtot);
     findHighscore(healthtot);
 }
@@ -440,6 +459,7 @@ attack1=a1;
 //user attack
 float User::Action(int inp)
 {
+    float x,y;
     //user selects action
     //replaced by buttons.
 
@@ -448,6 +468,8 @@ float User::Action(int inp)
 
         case 1:
             ehealth-=attack1;
+            LCD.WriteAt("You placed a",5,175);
+            LCD.WriteAt("Figure.",5,195);
             break;
         case 2:
             break;
@@ -459,24 +481,33 @@ float User::Action(int inp)
     }
 
 
+    Sleep(.25);
+    while(!(LCD.Touch(&x,&y)));
+
+    resetText();
+
     //display results
     if (ehealth<=0)
     {
         ehealth=0;
         drawEHealth(ehealth);
 
-        /*
-        cout<<endl<<"This section has 0% remaining";
-        cout<<endl<<"You have completed this section.";
-        */
-        while(!(LCD.Touch(&x,&y));
+        LCD.WriteAt("You have completed",5,175);
+        LCD.WriteAt("this section.",5,195);
+        Sleep(.25);
+        while(!(LCD.Touch(&x,&y)));
 
         return ehealth;
     }
-    resetText();
-    LCD.WriteAt("This section has % remaining.",5 , 175);
 
-    while(!(LCD.Touch(&x,&y));
+    drawEHealth(ehealth);
+    resetText();
+
+    LCD.WriteAt("You made progress.",5 , 175);
+
+    Sleep(.25);
+    while(!(LCD.Touch(&x,&y)));
+
 
     return ehealth;
 }
@@ -499,27 +530,44 @@ attack1=a1;
 //enemy attack
 float Enemy::Reaction()
 {
+    float x,y;
+
+    resetText();
+
+    LCD.WriteAt("This section used",5 , 175);
+    LCD.WriteAt("Netflix.",5,195);
+
+
+    Sleep(.25);
+    while(!(LCD.Touch(&x,&y)));
+
     //preform random attack
     uhealth-=attack1;
 
+    resetText();
     //display results
         if (uhealth<=0)
         {
         uhealth=0;
-        redrawUHealth(uhealth);
-        /*
-        cout<<endl<<"Your motivation has reached 0%";
-        cout<<endl<<"You decide to turn in the lab report as is and go take a nap.";
-        */
-        while(!(LCD.Touch(&x,&y));
+        drawUHealth(uhealth);
+
+        LCD.WriteAt("You have no motivation",5,175);
+        LCD.WriteAt("You decide to turn in the",5,195);
+        LCD.WriteAt("report and take a nap.",5,215);
+        Sleep(.25);
+        while(!(LCD.Touch(&x,&y)));
 
         return uhealth;
         }
 
-redrawUHealth(uhealth);
-while(!(LCD.Touch(&x,&y));
+    drawUHealth(uhealth);
+
+    LCD.WriteAt("You lost motivation.",5,175);
+
+    Sleep(.25);
+    while(!(LCD.Touch(&x,&y)));
 
 
-return uhealth;
+    return uhealth;
 
 }
