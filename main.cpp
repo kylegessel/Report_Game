@@ -76,7 +76,8 @@ class Enemy
     private:
     //store users current health.
     float uhealth;
-    //store users attacks
+
+    //store enemy attacks
     float attack1;
     float attack2;
     float attack3;
@@ -94,9 +95,7 @@ int main(void)
     //define variables
     float x,y;
     float userhealth, enemyhealth, totalhealth;
-    int q, n=0;
-    int c;
-    int lose;
+    int n=0, c, lose;
 
     //clear for fresh start
     LCD.Clear(WHITE);
@@ -242,10 +241,13 @@ int main(void)
         //battle loop
         while (true)
         {
+            //display attack screen
             c=attackScreen();
+
+            //redraw main game
             mainScreen(userhealth,enemyhealth);
 
-
+            //user strikes first
             enemyhealth=U2.Action(c);
 
             //if enemy is defeated begin to exit this battle
@@ -580,10 +582,11 @@ void creditsScreen()
     //print out credits
     LCD.WriteLine("Game Created by Dimitra Bibidakis and Kyle Gessel using FEH proteus device and libraries.");
     LCD.WriteLine("");
-    LCD.WriteLine("Touch to go back to the Main Menu.");
+
 
     //wait for touch
         Sleep(.25);
+        LCD.WriteLine("Touch to go back to the Main Menu.");
         while(!(LCD.Touch(&x,&y)));
 
 }
@@ -595,10 +598,20 @@ void rulesScreen()
     LCD.SetFontColor(SILVER);
 
     //print out credits
-    LCD.WriteLine("Battle your way through the sections of an FEH Lab Report by clicking the screen and selecting your attacks!");
+    LCD.WriteLine("Battle your way through");
+    LCD.WriteLine("the sections of an FEH");
+    LCD.WriteLine("Lab Report by clicking");
+    LCD.WriteLine("the screen and select-");
+    LCD.WriteLine("ing your attack.");
+    LCD.WriteLine("Different attacks have");
+    LCD.WriteLine("different effects on");
+    LCD.WriteLine("different Sections");
+
+
 
     //wait for touch
         Sleep(.25);
+        LCD.WriteLine("Touch to go back");
         while(!(LCD.Touch(&x,&y)));
 
 }
@@ -717,43 +730,59 @@ int attackScreen()
 
     }
     LCD.SetFontColor(BLACK);
+
+    //return attack choice
     return c;
 }
 
 void findHighscore(float s)
 {
     float x,y;
-    float temp;
+    float temp0,temp1,temp2,temp3,temp4;
+
+    //replace highscore and send it down file accordingly
     if (s>highscore[0])
     {
-        temp=highscore[0];
+        temp0=highscore[0];
+        temp1=highscore[1];
+        temp2=highscore[2];
+        temp3=highscore[3];
         highscore[0]=s;
-        highscore[1]=temp;
+        highscore[1]=temp0;
+        highscore[2]=temp1;
+        highscore[3]=temp2;
+        highscore[4]=temp3;
+
     }
     else if (s>highscore[1])
     {
-        temp=highscore[1];
+        temp1=highscore[1];
+        temp2=highscore[2];
+        temp3=highscore[3];
         highscore[1]=s;
-        highscore[2]=temp;
+        highscore[2]=temp1;
+        highscore[3]=temp2;
+        highscore[4]=temp3;
     }
     else if (s>highscore[2])
     {
-        temp=highscore[2];
+        temp2=highscore[2];
+        temp3=highscore[3];
         highscore[2]=s;
-        highscore[3]=temp;
+        highscore[3]=temp2;
+        highscore[4]=temp3;
     }
     else if (s>highscore[3])
     {
-        temp=highscore[3];
+        temp3=highscore[3];
         highscore[3]=s;
-        highscore[4]=temp;
+        highscore[4]=temp3;
     }
     else if (s>highscore[4])
     {
         highscore[4]=s;
     }
 
-    while(!(LCD.Touch(&x,&y)));
 }
 
 void statsScreen()
@@ -777,6 +806,9 @@ void statsScreen()
 
 
     }
+
+    //wait for touch
+    Sleep(.25);
     while(!(LCD.Touch(&x,&y)));
 }
 
@@ -784,11 +816,13 @@ void winScreen(float healthtot)
 {
     float x,y;
 
+    //display
     LCD.Clear(BLACK);
     LCD.SetFontColor(YELLOW);
     LCD.WriteLine("YOU WIN!");
     LCD.WriteLine("");
     LCD.Write("Your score was: ");
+    //display score
     LCD.WriteLine(healthtot);
 
     //store in highscore
