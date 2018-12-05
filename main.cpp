@@ -2,12 +2,14 @@
 #include <FEHIO.h>
 #include <FEHUtility.h>
 #include <stdlib.h>
+#include <string.h>
 
 //global variables
 //stores highscores
 float highscore[5];
 //stores the character name of section
-char sectionName[20];
+char sectionName[5][20]={"Intro","EM","Res & Desc","Discussion","Conclusion"};
+int stage;
 
 //prototype functions
 
@@ -36,7 +38,7 @@ void statsScreen();
 //displays your win!
 void winScreen(float);
 //displays the loss
-void loseScreen();
+void loseScreen(float);
 
 
 
@@ -67,7 +69,7 @@ class User
 class Enemy
 {
     public:
-    Enemy(float,float);
+    Enemy(float,float,float,float,float);
     //returns users health after each enemy attack
     float Reaction();
 
@@ -110,14 +112,14 @@ int main(void)
         {
             //go into start menu
             n=startMenu();
-            
+
             if (n==1)
             {
-                //procede forward to start game 
+                //procede forward to start game
                 break;
             }
             else if (n==2)
-            {   
+            {
                 //display stats
                 statsScreen();
             }
@@ -139,24 +141,27 @@ int main(void)
         //Initialize total health to 0
         totalhealth=0;
 
-        //initialize lose to false 
+        //initialize lose to false
         lose=0;
 
-        
+        //initialize stage
+        stage=0;
+
+
         //START OF BATTLE 1 START OF BATTLE 1
 
         //Initialize healths to 100
-        
+
         userhealth=100;
         enemyhealth = 100;
 
         //name section global variable
-        sectionName[]="Intro";
+        //sectionName[]={"Intro"};
 
         //intialize strengths  of user and enemy
         User U1(100,15,35,10,20);
         Enemy E1(100,20,15,10,30);
-        
+
 
         //display start battle screen
         mainScreen(userhealth, enemyhealth);
@@ -168,7 +173,7 @@ int main(void)
         //wait for touch
         Sleep(.25);
         while(!(LCD.Touch(&x,&y)));
-        
+
         //battle loop
         while (true)
         {
@@ -203,36 +208,37 @@ int main(void)
         //end of battle 1
 
 
-
+        stage++;
 
         //start of battle 2
 
-        if(lose=0)
+        if(lose==0)
         {
         //Initialize healths to 100
-        
+
         userhealth=100;
         enemyhealth = 100;
 
         //name section global variable
-        sectionName[]="EM";
+        //sectionName[]={"EM"};
 
         //intialize strengths  of user and enemy
         User U2(100,35,20,10,15);
         Enemy E2(100,20,15,10,30);
-        
+
 
         //display start battle screen
         mainScreen(userhealth, enemyhealth);
 
         //print initial info
-        LCD.WriteAt("The Experimental Methodology",5,175);
-        LCD.WriteAt("stands in your way.",5,195);
+        LCD.WriteAt("The Experimental",5,175);
+        LCD.WriteAt("Methodogy stands in",5,195);
+        LCD.WriteAt("your way.",5,215);
 
         //wait for touch
         Sleep(.25);
         while(!(LCD.Touch(&x,&y)));
-        
+
         //battle loop
         while (true)
         {
@@ -269,37 +275,38 @@ int main(void)
 
 
 
-
+        stage++;
 
 
 
         //START OF BATTLE 3 START OF BATTLE 3
-        if (lose=0)
+        if (lose==0)
         {
         //Initialize healths to 100
-        
+
         userhealth=100;
         enemyhealth = 100;
 
         //name section global variable
-        sectionName[]="Res & Desc";
+        //sectionName[]={"Res & Desc"};
 
         //intialize strengths  of user and enemy
         User U3(100,25,20,35,15);
         Enemy E3(100,20,15,10,30);
-        
+
 
         //display start battle screen
         mainScreen(userhealth, enemyhealth);
 
         //print initial info
-        LCD.WriteAt("The results and description",5,175);
-        LCD.WriteAt("stand in your way.",5,195);
+        LCD.WriteAt("The results and",5,175);
+        LCD.WriteAt("description stand",5,195);
+        LCD.WriteAt("your way.",5,215);
 
         //wait for touch
         Sleep(.25);
         while(!(LCD.Touch(&x,&y)));
-        
+
         //battle loop
         while (true)
         {
@@ -335,21 +342,24 @@ int main(void)
         //end of battle 3
 
 
+        stage++;
+
+
         //START OF BATTLE 4 START OF BATTLE 4
-        if(lose=0)
+        if(lose==0)
         {
         //Initialize healths to 100
-        
+
         userhealth=100;
         enemyhealth = 100;
 
         //name section global variable
-        sectionName[]="Discussion";
+        //sectionName[]={"Discussion"};
 
         //intialize strengths  of user and enemy
         User U4(100,15,20,10,35);
         Enemy E4(100,20,15,10,30);
-        
+
 
         //display start battle screen
         mainScreen(userhealth, enemyhealth);
@@ -361,9 +371,9 @@ int main(void)
         //wait for touch
         Sleep(.25);
         while(!(LCD.Touch(&x,&y)));
-        
+
         //battle loop
-        while (lose=1;)
+        while (true)
         {
             c=attackScreen();
             mainScreen(userhealth,enemyhealth);
@@ -397,21 +407,24 @@ int main(void)
 
         //end of battle 4
 
+
+        stage++;
+
         //START OF BATTLE 5 START OF BATTLE 5
-        if (lose=0)
+        if (lose==0)
         {
         //Initialize healths to 100
-        
+
         userhealth=100;
         enemyhealth = 100;
 
         //name section global variable
-        sectionName[]="Conclusion";
+        //sectionName[]={"Conclusion"};
 
         //intialize strengths  of user and enemy
         User U5(100,10,20,10,35);
         Enemy E5(100,20,15,10,30);
-        
+
 
         //display start battle screen
         mainScreen(userhealth, enemyhealth);
@@ -423,9 +436,9 @@ int main(void)
         //wait for touch
         Sleep(.25);
         while(!(LCD.Touch(&x,&y)));
-        
+
         //battle loop
-        while (lose=1;)
+        while (true)
         {
             c=attackScreen();
             mainScreen(userhealth,enemyhealth);
@@ -458,21 +471,21 @@ int main(void)
         //end of battle 5
 
         //display loss
-        if (lose=1)
+        if (lose==1)
         {
             loseScreen(totalhealth);
         }
 
 
         //display win
-        if (lose=0)
+        if (lose==0)
         {
             winScreen(totalhealth);
         }
 
 
 
-    //repeat game 
+    //repeat game
 
     }while(true);
 
@@ -563,12 +576,12 @@ void creditsScreen()
     float x,y;
     LCD.Clear(BLACK);
     LCD.SetFontColor(SILVER);
-    
+
     //print out credits
     LCD.WriteLine("Game Created by Dimitra Bibidakis and Kyle Gessel using FEH proteus device and libraries.");
     LCD.WriteLine("");
     LCD.WriteLine("Touch to go back to the Main Menu.");
-        
+
     //wait for touch
         Sleep(.25);
         while(!(LCD.Touch(&x,&y)));
@@ -580,10 +593,10 @@ void rulesScreen()
     float x,y;
     LCD.Clear(BLACK);
     LCD.SetFontColor(SILVER);
-    
+
     //print out credits
     LCD.WriteLine("Battle your way through the sections of an FEH Lab Report by clicking the screen and selecting your attacks!");
-        
+
     //wait for touch
         Sleep(.25);
         while(!(LCD.Touch(&x,&y)));
@@ -607,7 +620,7 @@ void mainScreen(float user, float enemy)
               LCD.SetFontColor(SILVER);
               LCD.FillRectangle(130,15,110,40);
               LCD.SetFontColor(BLACK);
-              LCD.WriteAt("Intro",135,20);
+              LCD.WriteAt(sectionName[stage],135,20);
               LCD.SetFontColor(GREEN);
               LCD.FillRectangle(135,40,enemy,5);
 
@@ -622,7 +635,7 @@ void mainScreen(float user, float enemy)
     //make text box
     resetText();
 
-}  
+}
 
 void drawEHealth(float enemy)
 {
@@ -630,7 +643,7 @@ void drawEHealth(float enemy)
     LCD.SetFontColor(SILVER);
     LCD.FillRectangle(130,15,110,40);
     LCD.SetFontColor(BLACK);
-    LCD.WriteAt(sectionName,135,20);
+    LCD.WriteAt(sectionName[stage],135,20);
     LCD.SetFontColor(GREEN);
     LCD.FillRectangle(135,40,enemy,5);
     LCD.SetFontColor(BLACK);
@@ -769,6 +782,8 @@ void statsScreen()
 
 void winScreen(float healthtot)
 {
+    float x,y;
+
     LCD.Clear(BLACK);
     LCD.SetFontColor(YELLOW);
     LCD.WriteLine("YOU WIN!");
@@ -780,16 +795,18 @@ void winScreen(float healthtot)
     findHighscore(healthtot);
 
     Sleep(1.0);
-    LCD.Writeline("Touch to go back to menu");
-    
+    LCD.WriteLine("Touch to go back to menu");
+
     //wait for touch
     while(!(LCD.Touch(&x,&y)));
-    sleep(.25);
+    Sleep(.25);
 
 }
 
-void loseScreen(float healthtot);
+void loseScreen(float healthtot)
 {
+    float x,y;
+
     LCD.Clear(BLACK);
     LCD.SetFontColor(RED);
     LCD.WriteLine("YOU LOSE");
@@ -801,12 +818,12 @@ void loseScreen(float healthtot);
     findHighscore(healthtot);
 
     Sleep(1.0);
-    LCD.Writeline("Touch to go back to menu");
+    LCD.WriteLine("Touch to go back to menu");
 
     //wait for touch
     while(!(LCD.Touch(&x,&y)));
-    sleep(.25);
-    
+    Sleep(.25);
+
 
 }
 
@@ -918,29 +935,29 @@ float Enemy::Reaction()
 
 
     //randomly choose attack (srand defined earlier)
-    r=rand()%4
+    r=rand()%4;
 
     resetText();
 
      switch (r)
     {
         case 1:
-            ehealth-=attack1;
+            uhealth-=attack1;
             LCD.WriteAt("This section used",5,175);
             LCD.WriteAt("Netflix",5,195);
             break;
         case 2:
-            ehealth-=attack2;
+            uhealth-=attack2;
             LCD.WriteAt("This section messed",5,175);
             LCD.WriteAt("up the formatting.",5,195);
             break;
         case 3:
-             ehealth-=attack3;
+            uhealth-=attack3;
             LCD.WriteAt("This section is taking",5,175);
             LCD.WriteAt("longer than expected.",5,195);
             break;
-        case 4:
-            ehealth-=attack4;
+        case 0:
+            uhealth-=attack4;
             LCD.WriteAt("This section froze word.",5,175);
             break;
 
@@ -949,9 +966,6 @@ float Enemy::Reaction()
 
     Sleep(.25);
     while(!(LCD.Touch(&x,&y)));
-
-    //preform random attack
-    uhealth-=attack1;
 
     resetText();
     //display results
