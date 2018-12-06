@@ -505,22 +505,23 @@ return 0;
 
 
 
-
+//intro screen
 void intro()
 {
     float x,y;
+    
+    //display intro
     LCD.Clear(WHITE);
     LCD.SetFontColor(BLACK);
     LCD.WriteAt("Beat the Lab Report", 60, 111);
     Sleep(1.0);
     LCD.WriteAt("Touch to Continue",65,160);
 
+     //wait for touch
         while(!(LCD.Touch(&x,&y)));
-
-    startMenu();
-
 }
 
+//displays home screen
 int startMenu()
 {
         LCD.Clear(SILVER);
@@ -591,6 +592,7 @@ void creditsScreen()
 
 }
 
+//display rules screen
 void rulesScreen()
 {
     float x,y;
@@ -616,6 +618,7 @@ void rulesScreen()
 
 }
 
+//displays main battle screen with inputs from enemy and user healths
 void mainScreen(float user, float enemy)
 {
     LCD.Clear(WHITE);
@@ -650,6 +653,7 @@ void mainScreen(float user, float enemy)
 
 }
 
+//redraws the health box of the enemy (in user class)
 void drawEHealth(float enemy)
 {
     //make user health box
@@ -662,6 +666,7 @@ void drawEHealth(float enemy)
     LCD.SetFontColor(BLACK);
 }
 
+//redraws the health box of the user (in enemy class)
 void drawUHealth(float user)
 {
     //make enemy health box
@@ -674,7 +679,7 @@ void drawUHealth(float user)
     LCD.SetFontColor(BLACK);
 }
 
-
+//resets text box
 void resetText()
 {
     //make text box
@@ -735,6 +740,7 @@ int attackScreen()
     return c;
 }
 
+//saves the highscore
 void findHighscore(float s)
 {
     float x,y;
@@ -785,6 +791,7 @@ void findHighscore(float s)
 
 }
 
+//creates stats screen
 void statsScreen()
 {
     float x,y;
@@ -802,9 +809,6 @@ void statsScreen()
     LCD.Write(i+1);
     LCD.Write(". ");
     LCD.WriteLine(highscore[i]);
-
-
-
     }
 
     //wait for touch
@@ -812,6 +816,7 @@ void statsScreen()
     while(!(LCD.Touch(&x,&y)));
 }
 
+//creates win screen
 void winScreen(float healthtot)
 {
     float x,y;
@@ -837,6 +842,7 @@ void winScreen(float healthtot)
 
 }
 
+//creates loss screen
 void loseScreen(float healthtot)
 {
     float x,y;
@@ -886,6 +892,7 @@ float User::Action(int inp)
 {
     float x,y;
 
+    //determine input
     switch (inp)
     {
 
@@ -911,13 +918,15 @@ float User::Action(int inp)
 
     }
 
-
+    
+    //wait for touch
     Sleep(.25);
     while(!(LCD.Touch(&x,&y)));
 
     resetText();
 
     //display results
+    //if user wins go into if statement below
     if (ehealth<=0)
     {
         ehealth=0;
@@ -927,10 +936,12 @@ float User::Action(int inp)
         LCD.WriteAt("this section.",5,195);
         Sleep(.25);
         while(!(LCD.Touch(&x,&y)));
-
+        
+        //return health to main 
         return ehealth;
     }
-
+    
+    //else do this
     drawEHealth(ehealth);
     resetText();
 
@@ -939,7 +950,7 @@ float User::Action(int inp)
     Sleep(.25);
     while(!(LCD.Touch(&x,&y)));
 
-
+    //return health to main
     return ehealth;
 }
 
@@ -970,10 +981,12 @@ float Enemy::Reaction()
 
     //randomly choose attack (srand defined earlier)
     r=rand()%4;
-
+    
+    //reset textbox from before
     resetText();
-
-     switch (r)
+    
+    //choose random attack
+    switch (r)
     {
         case 1:
             uhealth-=attack1;
@@ -997,14 +1010,17 @@ float Enemy::Reaction()
 
     }
 
-
+    //wait for touch
     Sleep(.25);
     while(!(LCD.Touch(&x,&y)));
-
+    
+    //reset text box
     resetText();
+    
     //display results
-        if (uhealth<=0)
-        {
+    //if user dies go into alternate lines
+    if (uhealth<=0)
+    {
         uhealth=0;
         drawUHealth(uhealth);
 
@@ -1013,18 +1029,20 @@ float Enemy::Reaction()
         LCD.WriteAt("report and take a nap.",5,215);
         Sleep(.25);
         while(!(LCD.Touch(&x,&y)));
-
+        
+        //return health to main (0);
         return uhealth;
-        }
-
+    }
+    //else do standard results
     drawUHealth(uhealth);
 
     LCD.WriteAt("You lost motivation.",5,175);
-
+    
+    //wait for touch
     Sleep(.25);
     while(!(LCD.Touch(&x,&y)));
 
-
+    //return health to main
     return uhealth;
 
 }
